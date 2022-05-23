@@ -348,3 +348,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/Ararat-Windows/cert.crt
+/Ararat-Windows/cert.p12
+/Ararat-Windows/key.pem
+/Ararat-Windows/lxd-webui.crt
+/Ararat-Windows/lxd-webui.csr
+/Ararat-Windows/lxd-webui.key
