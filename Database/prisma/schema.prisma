@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model imageserver {
+  id       String @id
+  name     String @unique(map: "ImageServer_name_key")
+  url      String
+  protocol String @default("simplestreams")
+}
+
+model instance {
+  id           String         @id
+  name         String
+  nodeId       String
+  node         node           @relation(fields: [nodeId], references: [id], onDelete: Cascade, map: "Instance_nodeId_fkey")
+  instanceuser instanceuser[]
+
+  @@index([nodeId], map: "Instance_nodeId_fkey")
+}
+
+model instanceuser {
+  id                     String                   @id
+  userId                 String
+  instanceId             String
+  instance               instance                 @relation(fields: [instanceId], references: [id], onDelete: Cascade, map: "InstanceUser_instanceId_fkey")
+  user                   user                     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "InstanceUser_userId_fkey")
+  instanceuserpermission instanceuserpermission[]
+
+  @@index([instanceId], map: "InstanceUser_instanceId_fkey")
+  @@index([userId], map: "InstanceUser_userId_fkey")
+}
+
+model instanceuserpermission {
+  id             String       @id
+  instanceUserId String
+  permission     String
+  instanceuser   instanceuser @relation(fields: [instanceUserId], references: [id], onDelete: Cascade, map: "InstanceUserPermission_instanceUserId_fkey")
+
+  @@index([instanceUserId], map: "InstanceUserPermission_instanceUserId_fkey")
+}
+
+model node {
+  id          String     @id
+  name        String
+  address     String
+  port        String
+  lxdPort     String
+  sftpPort    String
+  certificate String
+  key         String
+  encIV       String
+  instance    instance[]
+}
+
+model permission {
+  id         String @id
+  userId     String
+  permission String
+  user       user   @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Permission_userId_fkey")
+
+  @@index([userId], map: "Permission_userId_fkey")
+}
+
+model user {
+  id           String         @id
+  firstName    String
+  lastName     String
+  email        String         @unique(map: "User_email_key")
+  username     String         @unique(map: "User_username_key")
+  password     String
+  language     String?
+  instanceuser instanceuser[]
+  permission   permission[]
+}

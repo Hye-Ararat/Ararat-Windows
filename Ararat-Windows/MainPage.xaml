@@ -9,7 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBox HorizontalAlignment="Left" Margin="156,84,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Height="827" Width="1163" x:Name="textbox"/>
-
+        <NavigationView Content="NavigationView" x:Name="nav" ItemInvoked="nav_ItemInvoked"/>
     </Grid>
 </Page>
